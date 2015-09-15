@@ -23,6 +23,7 @@ var ruleTester = new RuleTester(),
     keywordOnlyArgs = [ { functions: "never", keywords: "always" } ],
     expectedSpacingErrorMessage = "Missing space before opening brace.",
     expectedSpacingError = { message: expectedSpacingErrorMessage },
+    expectedNoSpacingErrorMessage = "Unexpected space before opening brace.",
     expectedNoSpacingError = { message: "Unexpected space before opening brace."};
 
 ruleTester.run("space-before-blocks", rule, {
@@ -123,6 +124,30 @@ ruleTester.run("space-before-blocks", rule, {
             output: "if(a) {}"
         },
         {
+            code: "if(a){}",
+            options: keywordOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "if(a) {}"
+        },
+        {
+            code: "if(a) {}",
+            options: functionsOnlyArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "if(a){}"
+        },
+        {
+            code: "if(a) { function a() {} }",
+            options: functionsOnlyArgs,
+            errors: [ { message: expectedNoSpacingErrorMessage, line: 1, column: 7 } ],
+            output: "if(a){ function a() {} }"
+        },
+        {
+            code: "if(a) { function a() {} }",
+            options: keywordOnlyArgs,
+            errors: [ { message: expectedNoSpacingErrorMessage, line: 1, column: 22 } ],
+            output: "if(a) { function a(){} }"
+        },
+        {
             code: "if(a) {}",
             options: neverArgs,
             errors: [ expectedNoSpacingError ],
@@ -157,6 +182,30 @@ ruleTester.run("space-before-blocks", rule, {
             output: "function a(){}"
         },
         {
+            code: "function a(){ if (a){} }",
+            options: functionsOnlyArgs,
+            errors: [ { message: expectedSpacingErrorMessage, line: 1, column: 13 } ],
+            output: "function a() { if (a){} }"
+        },
+        {
+            code: "function a() { if (a) {} }",
+            options: keywordOnlyArgs,
+            errors: [ { message: expectedNoSpacingErrorMessage, line: 1, column: 14 } ],
+            output: "function a(){ if (a) {} }"
+        },
+        {
+            code: "function a(){}",
+            options: functionsOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "function a() {}"
+        },
+        {
+            code: "function a() {}",
+            options: keywordOnlyArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "function a(){}"
+        },
+        {
             code: "switch(a){}",
             errors: [ expectedSpacingError ],
             output: "switch(a) {}"
@@ -164,6 +213,18 @@ ruleTester.run("space-before-blocks", rule, {
         {
             code: "switch(a) {}",
             options: neverArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "switch(a){}"
+        },
+        {
+            code: "switch(a){}",
+            options: keywordOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "switch(a) {}"
+        },
+        {
+            code: "switch(a) {}",
+            options: functionsOnlyArgs,
             errors: [ expectedNoSpacingError ],
             output: "switch(a){}"
         },
@@ -190,6 +251,30 @@ ruleTester.run("space-before-blocks", rule, {
             output: "try{}catch(a){}"
         },
         {
+            code: "try {}catch(a){}",
+            options: functionsOnlyArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "try{}catch(a){}"
+        },
+        {
+            code: "try {} catch(a){}",
+            options: keywordOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "try {} catch(a) {}"
+        },
+        {
+            code: "try { function b() {} } catch(a) {}",
+            options: keywordOnlyArgs,
+            errors: [ { message: expectedNoSpacingErrorMessage, line: 1, column: 20 } ],
+            output: "try { function b(){} } catch(a) {}"
+        },
+        {
+            code: "try{ function b(){} }catch(a){}",
+            options: functionsOnlyArgs,
+            errors: [ { message: expectedSpacingErrorMessage, line: 1, column: 18 } ],
+            output: "try{ function b() {} }catch(a){}"
+        },
+        {
             code: "for(;;){}",
             errors: [ expectedSpacingError ],
             output: "for(;;) {}"
@@ -199,6 +284,30 @@ ruleTester.run("space-before-blocks", rule, {
             options: neverArgs,
             errors: [ expectedNoSpacingError ],
             output: "for(;;){}"
+        },
+        {
+            code: "for(;;){}",
+            options: keywordOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "for(;;) {}"
+        },
+        {
+            code: "for(;;) {}",
+            options: functionsOnlyArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "for(;;){}"
+        },
+        {
+            code: "for(;;){ function a(){} }",
+            options: functionsOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "for(;;){ function a() {} }"
+        },
+        {
+            code: "for(;;) { function a() {} }",
+            options: keywordOnlyArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "for(;;) { function a(){} }"
         },
         {
             code: "while(a){}",
@@ -212,12 +321,72 @@ ruleTester.run("space-before-blocks", rule, {
             output: "while(a){}"
         },
         {
+            code: "while(a){}",
+            options: keywordOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "while(a) {}"
+        },
+        {
+            code: "while(a) {}",
+            options: functionsOnlyArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "while(a){}"
+        },
+        {
+            code: "while(a){ function a(){} }",
+            options: functionsOnlyArgs,
+            errors: [ expectedSpacingError ],
+            output: "while(a){ function a() {} }"
+        },
+        {
+            code: "while(a) { function a() {} }",
+            options: keywordOnlyArgs,
+            errors: [ expectedNoSpacingError ],
+            output: "while(a) { function a(){} }"
+        },
+        {
             code: "class test{}",
             ecmaFeatures: {
                 classes: true
             },
             errors: [ expectedSpacingError ],
             output: "class test {}"
+        },
+        {
+            code: "class test{}",
+            options: keywordOnlyArgs,
+            ecmaFeatures: {
+                classes: true
+            },
+            errors: [ expectedSpacingError ],
+            output: "class test {}"
+        },
+        {
+            code: "class test{ constructor(){} }",
+            options: functionsOnlyArgs,
+            ecmaFeatures: {
+                classes: true
+            },
+            errors: [ expectedSpacingError ],
+            output: "class test{ constructor() {} }"
+        },
+        {
+            code: "class test { constructor() {} }",
+            options: keywordOnlyArgs,
+            ecmaFeatures: {
+                classes: true
+            },
+            errors: [ expectedNoSpacingError ],
+            output: "class test { constructor(){} }"
+        },
+        {
+            code: "class test {}",
+            options: functionsOnlyArgs,
+            ecmaFeatures: {
+                classes: true
+            },
+            errors: [ expectedNoSpacingError ],
+            output: "class test{}"
         },
         {
             code: "class test {}",
