@@ -31,6 +31,7 @@ ruleTester.run("space-before-blocks", rule, {
         { code: "if(a)  {}" },
         { code: "if(a){}", options: neverArgs },
         { code: "if(a){}", options: functionsOnlyArgs },
+        { code: "if(a) {}", options: keywordOnlyArgs },
         { code: "if(a){ function b() {} }", options: functionsOnlyArgs },
         { code: "if(a) { function b(){} }", options: keywordOnlyArgs },
         { code: "if(a)\n{}" },
@@ -38,11 +39,13 @@ ruleTester.run("space-before-blocks", rule, {
         { code: "if(a) {}else {}" },
         { code: "if(a){}else{}", options: neverArgs },
         { code: "if(a){}else{}", options: functionsOnlyArgs },
+        { code: "if(a) {} else {}", options: keywordOnlyArgs },
         { code: "if(a){ function b() {} }else{}", options: functionsOnlyArgs },
         { code: "if(a) { function b(){} } else {}", options: keywordOnlyArgs },
         { code: "function a() {}" },
         { code: "function a(){}", options: neverArgs },
         { code: "function a(){}", options: keywordOnlyArgs },
+        { code: "function a() {}", options: functionsOnlyArgs },
         { code: "function a(){ if(b) {} }", options: keywordOnlyArgs },
         { code: "function a() { if(b){} }", options: functionsOnlyArgs },
         { code: "switch(a.b(c < d)) { case 'foo': foo(); break; default: if (a) { bar(); } }" },
@@ -52,22 +55,42 @@ ruleTester.run("space-before-blocks", rule, {
         { code: "switch(a.b(c < d)){ case 'foo': foo(); break; default: if (a){ bar(); } }", options: functionsOnlyArgs },
         { code: "switch(a){}", options: neverArgs },
         { code: "switch(a){}", options: functionsOnlyArgs },
+        { code: "switch(a) {}", options: keywordOnlyArgs },
         { code: "try {}catch(a) {}" },
         { code: "try{}catch(a){}", options: neverArgs },
         { code: "try{}catch(a){}", options: functionsOnlyArgs },
+        { code: "try {} catch(a) {}", options: keywordOnlyArgs },
         { code: "try{ function b() {} }catch(a){}", options: functionsOnlyArgs },
         { code: "try { function b(){} } catch(a) {}", options: keywordOnlyArgs },
         { code: "for(;;) {}" },
         { code: "for(;;){}", options: neverArgs },
         { code: "for(;;){}", options: functionsOnlyArgs },
+        { code: "for(;;) {}", options: keywordOnlyArgs },
         { code: "for(;;){ function a() {} }", options: functionsOnlyArgs },
+        { code: "for(;;) { function a(){} }", options: keywordOnlyArgs },
         { code: "while(a) {}" },
         { code: "while(a){}", options: neverArgs },
         { code: "while(a){}", options: functionsOnlyArgs },
+        { code: "while(a) {}", options: keywordOnlyArgs },
         { code: "while(a){ function b() {} }", options: functionsOnlyArgs },
+        { code: "while(a) { function b(){} }", options: keywordOnlyArgs },
+        {
+            code: "class test { constructor(){} }",
+            options: keywordOnlyArgs,
+            ecmaFeatures: {
+                classes: true
+            }
+        },
         {
             code: "class test{ constructor() {} }",
             options: functionsOnlyArgs,
+            ecmaFeatures: {
+                classes: true
+            }
+        },
+        {
+            code: "class test {}",
+            options: keywordOnlyArgs,
             ecmaFeatures: {
                 classes: true
             }
